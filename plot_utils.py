@@ -37,3 +37,19 @@ def shiftedColorMap(cmap_name, axis, midpoint, name='shiftedcmap'):
     plt.register_cmap(cmap=newcmap)
 
     return newcmap
+
+# This function is likely uneeded. Instead just do cmap=plt.get_cmap('cmapname', n) inside of plt.figure or whatever
+# Also, to center the ticks nicely:
+# cbar.set_ticks( (np.arange(n) + 0.5)*(n-1)/n )
+# cbar.set_ticklabels( np.arange(n) ) or whatever else you want them to be
+def discrete_cmap(N, base_cmap=None):
+    """Create an N-bin discrete colormap from the specified input map"""
+
+    # Note that if base_cmap is a string or None, you can simply do
+    #    return plt.cm.get_cmap(base_cmap, N)
+    # The following works for string, None, or a colormap instance:
+
+    base = plt.cm.get_cmap(base_cmap)
+    color_list = base(np.linspace(0, 1, N))
+    cmap_name = base.name + str(N)
+    return base.from_list(cmap_name, color_list, N)
