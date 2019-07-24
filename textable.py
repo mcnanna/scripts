@@ -4,6 +4,11 @@ Table.py
 A module/class for creating LaTeX deluxetable's.  In a nutshell, you create
 a table instance, add columns, set options, then call the pring method.'''
 
+###### NOTE ON SIGFIGS ######
+# Right now, sigfigs is interpreted as places after the decimal
+# To make it actually mean significant figures, change the two 
+# commented lines in print_data
+
 import numpy
 import sigfig
 import os,string,re,sys
@@ -195,7 +200,8 @@ class TexTable:
                      if numpy.isnan(data[k][j]):
                         rows[-1].append('\\ldots')
                      else:
-                        rows[-1].append(sigfig.round_sig(data[k][j], sf))
+                        #rows[-1].append(sigfig.round_sig(data[k][j], sf))
+                        rows[-1].append(sigfig.round_n(data[k][j], sf)) # Mitch
                   else:
                      rows[-1].append(str(data[k][j]))
                else:
@@ -203,8 +209,8 @@ class TexTable:
                   if numpy.isnan(data[k][j,0]):
                      val = "\\ldots"
                   else:
-                     val = sigfig.round_sig_error(data[k][j,0],data[k][j,1],sf,
-                            paren=True)
+                     #val = sigfig.round_sig_error(data[k][j,0],data[k][j,1],sf,paren=True)
+                     val = ( sigfig.round_n(data[k][j,0], sf), sigfig.round_n(data[k][j,1], sf) ) # Mitch
                   rows[-1].append(val)
 
          for row in rows:
@@ -217,7 +223,7 @@ class TexTable:
       if self.comments:
           fp.write("{\\footnotesize \\tablecomments{%s}}\n" % str(self.comments))
       if self.notes: # Mitch
-          fp.write(str(self.notes))
+          fp.write(str(self.notes + '\n'))
       fp.write("\\end{deluxetable*}\n")
       if self.doc:
          fp.write("\\end{document}")

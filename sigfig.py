@@ -4,6 +4,22 @@ import types,re,string
 
 epat = re.compile(r'^([^e]+)e(.+)$')
 
+def round_n(x, n): # Mitch
+    if type(n) is not types.IntType:
+        raise TypeError, "n must be an integer"
+    try:
+        x = float(x)
+    except:
+        raise TypeError, "x must be a floating point object"
+
+    if n == 0:
+        return str(int(round(x, 0)))
+    else:
+        rounded = str(round(x, n))
+        point = rounded.index('.')
+        rounded += (n - len(rounded[point+1:])) * '0'
+        return rounded
+
 def round_sig(x, n):
    '''round floating point x to n significant figures'''
    if type(n) is not types.IntType:
