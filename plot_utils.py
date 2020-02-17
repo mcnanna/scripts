@@ -3,7 +3,7 @@ import matplotlib
 import matplotlib.pyplot as plt
 from mpl_toolkits.axes_grid1 import AxesGrid
 
-def shiftedColorMap(cmap_name, axis, midpoint, name='shiftedcmap'):
+def shiftedColorMap(cmap_name, mn, mx, midpoint, name='shiftedcmap'):
     cmap = getattr(matplotlib.cm, cmap_name)
 
     cdict = {
@@ -13,10 +13,10 @@ def shiftedColorMap(cmap_name, axis, midpoint, name='shiftedcmap'):
         'alpha': []
         }
 
-    start = min(axis)
-    stop = max(axis)
+    start = mn
+    stop = mx
     
-    mid = (midpoint - start)/(stop - start) # midpoint scaled between 0 and 1
+    mid = float((midpoint - start))/(stop - start) # midpoint scaled between 0 and 1
 
     reg_index = np.linspace(0, 1.0, 257)
 

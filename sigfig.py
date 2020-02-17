@@ -16,12 +16,12 @@ def round_n(x, n): # Mitch
         return str(int(round(x, 0)))
     else:
         # Find number of sigfigs after decimal place:
-        point = str(x).index('.')
-        sigfigs = len(str(x)[point+1])
+        point = str(x).find('.')
+        sigfigs = len(str(x)[point+1:])
 
         rounded = str(round(x, n))
         point = rounded.index('.')
-        lost_sigfigs = sigfigs - len(rounded[point+1])
+        lost_sigfigs = sigfigs - len(rounded[point+1:])
         rounded += lost_sigfigs * '0'
         #rounded += (n - len(rounded[point+1:])) * '0' # pad with zeros
         rounded += (n - len(rounded[point+1:])) * ' ' # pad with spaces
