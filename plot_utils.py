@@ -38,6 +38,30 @@ def shiftedColorMap(cmap_name, mn, mx, midpoint, name='shiftedcmap'):
 
     return newcmap
 
+
+def truncatedColorMap(cmap,n_min=0,n_max=256):
+    """ Generate a truncated colormap
+    Colormaps have a certain number of colors (usually 255) which is
+    available via cmap.N
+    This is a simple function which returns a new color map from a
+    subset of the input colormap. For example, if you only want the jet
+    colormap up to green colors you may use
+    tcmap = truncate_cmap(plt.cm.jet,n_max=150)
+    This function is especially useful when you want to remove the white
+    bounds of a colormap
+    Parameters
+    cmap : plt.matplotlib.colors.Colormap
+    n_min : int
+    n_max : int
+    Return
+    truncated_cmap : plt.matplotlib.colors.Colormap
+    """
+    cmap = plt.matplotlib.cm.get_cmap(cmap)
+    color_index = np.arange(n_min,n_max).astype(int)
+    colors = cmap(color_index)
+    name = "truncated_{}".format(cmap.name)
+    return plt.matplotlib.colors.ListedColormap(colors,name=name)
+
 # This function is likely uneeded. Instead just do cmap=plt.get_cmap('cmapname', n) inside of plt.figure or whatever
 # Also, to center the ticks nicely:
 # cbar.set_ticks( (np.arange(n) + 0.5)*(n-1)/n )
